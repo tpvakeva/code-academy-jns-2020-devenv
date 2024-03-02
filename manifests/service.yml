@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "codeacademy2020userservice"
+  labels:
+    app: "codeacademy2020userservice"
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app: "codeacademy2020userservice"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "codeacademy2020mongo"
+  labels:
+    app: "codeacademy2020mongo"
+spec:
+  ports:
+    - port: 27017
+      name: mongo
+  selector:
+    app: "codeacademy2020mongo"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "codeacademy2020fashionservice"
+  labels:
+    app: "codeacademy2020fashionservice"
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      name: http
+  selector:
+    app: "codeacademy2020fashionservice"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "codeacademy2020libraryservice"
+  labels:
+    app: "codeacademy2020libraryservice"
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: "codeacademy2020libraryservice"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "codeacademy2020client"
+  labels:
+    app: "codeacademy2020client"
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: "codeacademy2020client"

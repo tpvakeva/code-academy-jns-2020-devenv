@@ -1,0 +1,153 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "codeacademy2020userservice"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "codeacademy2020userservice"
+  template:
+    metadata:
+      labels:
+        app: "codeacademy2020userservice"
+    spec:
+      containers:
+        - name: "codeacademy2020userservice"
+          image: "codeacademy2020registerantti.azurecr.io/codeacademy2020userservice"
+          env:
+            - name: MONGO_HOST
+              value: "codeacademy2020mongo"
+            - name: MONGO_USER
+              value: "root"
+            - name: MONGO_PASS
+              value: "example"
+          ports:
+            - containerPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "codeacademy2020mongo"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "codeacademy2020mongo"
+  template:
+    metadata:
+      labels:
+        app: "codeacademy2020mongo"
+    spec:
+      containers:
+        - name: "codeacademy2020mongo"
+          image: mongo
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "root"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "example"
+          ports:
+            - containerPort: 27017
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "codeacademy2020fashionservice"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "codeacademy2020fashionservice"
+  template:
+    metadata:
+      labels:
+        app: "codeacademy2020fashionservice"
+    spec:
+      containers:
+        - name: "codeacademy2020fashionservice"
+          image: "codeacademy2020registerantti.azurecr.io/codeacademy2020fashionservice"
+          ports:
+            - containerPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "codeacademy2020libraryservice"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "codeacademy2020libraryservice"
+  template:
+    metadata:
+      labels:
+        app: "codeacademy2020libraryservice"
+    spec:
+      containers:
+        - name: "codeacademy2020libraryservice"
+          image: "codeacademy2020registerantti.azurecr.io/codeacademy2020libraryservice"
+          env:
+            - name: POSTGRES_USER
+              value: "postgres@codeacademy2020postgresantti"
+            - name: POSTGRES_PASS
+              value: "Password1"
+            - name: POSTGRES_HOST
+              value: "codeacademy2020postgresantti.postgres.database.azure.com"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: "library"
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "codeacademy2020libraryservice"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "codeacademy2020libraryservice"
+  template:
+    metadata:
+      labels:
+        app: "codeacademy2020libraryservice"
+    spec:
+      containers:
+        - name: "codeacademy2020libraryservice"
+          image: "codeacademy2020registerantti.azurecr.io/codeacademy2020libraryservice"
+          env:
+            - name: POSTGRES_USER
+              value: "postgres@codeacademy2020postgresantti"
+            - name: POSTGRES_PASS
+              value: "Password1"
+            - name: POSTGRES_HOST
+              value: "codeacademy2020postgresantti.postgres.database.azure.com"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: "library"
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "codeacademy2020client"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "codeacademy2020client"
+  template:
+    metadata:
+      labels:
+        app: "codeacademy2020client"
+    spec:
+      containers:
+        - name: "codeacademy2020client"
+          image: "codeacademy2020registerantti.azurecr.io/codeacademy2020client"
+          ports:
+            - containerPort: 80
