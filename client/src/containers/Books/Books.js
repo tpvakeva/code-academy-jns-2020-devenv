@@ -1,33 +1,33 @@
 import React, { useEffect, useMemo, useCallback } from "react";
 import DataTable from "../../components/DataTable";
 import { FaTrash } from "react-icons/fa";
-import AddUserModal from "./AddUserModal";
+import AddBookModal from "./AddBookModal";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import * as userActions from "./userAction";
+import * as bookActions from "./bookAction";
 
-const Users = (props) => {
-  const { getUsers, removeUser, users } = props;
+const Books = (props) => {
+  const { getBooks, removeBook, books } = props;
 
   useEffect(() => {
-    getUsers();
-  }, [getUsers]);
-  const onDelete = useCallback((user) => removeUser(user._id), [removeUser]);
+    getBooks();
+  }, [getBooks]);
+  const onDelete = useCallback((book) => removeBook(book.id), [removeBook]);
 
   const columns = useMemo(
     () => [
       {
         Header: "#",
-        accessor: "_id",
+        accessor: "id",
       },
       {
         Header: "Nimi",
-        accessor: "name",
+        accessor: "title",
       },
       {
-        Header: "Sähköposti",
-        accessor: "email",
+        Header: "Julkaistu",
+        accessor: "publicationYear",
       },
       {
         Header: "Toiminnot",
@@ -41,18 +41,18 @@ const Users = (props) => {
 
   return (
     <div>
-      <h3>Users</h3>
-      <AddUserModal />
-      <DataTable columns={columns} data={users} />
+      <h3>Books</h3>
+      <AddBookModal />
+      <DataTable columns={columns} data={books} />
     </div>
   );
 };
 
-Users.displayName = "Users";
+Books.displayName = "Books";
 
 export default connect(
   (store) => ({
-    users: store.userStore.users,
+    books: store.bookStore.books,
   }),
-  (dispatch) => bindActionCreators(userActions, dispatch)
-)(Users);
+  (dispatch) => bindActionCreators(bookActions, dispatch)
+)(Books);

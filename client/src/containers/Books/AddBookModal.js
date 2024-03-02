@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import {
   Button,
@@ -13,51 +13,58 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import * as userActions from "./userAction";
+import * as bookActions from "./bookAction";
 
-const AddUserModal = (props) => {
-  const { addUser } = props;
+const AddBookModal = (props) => {
+  const { addBook, getAuthors, authors } = props;
   const [modal, setModal] = useState(false);
+
+  useEffect(() => {
+    getAuthors();
+  }, [getAuthors]);
 
   const toggle = () => setModal(!modal);
 
   const onSubmitForm = (formData) => {
-    addUser(formData).then(() => toggle());
+    const { author, ...book } = formData;
+    addBook(author, book).then(() => toggle());
   };
 
   return (
     <div>
       <Button color="success" onClick={toggle}>
-        Add new User
+        Add new Book
       </Button>
       <Modal isOpen={modal}>
-        <Formik initialValues={{}} onSubmit={onSubmitForm}>
+        <Formik initialValues={{ author: 1 }} onSubmit={onSubmitForm}>
           {({ isSubmitting, submitForm }) => (
             <React.Fragment>
-              <ModalHeader toggle={toggle}>Add new user</ModalHeader>
+              <ModalHeader toggle={toggle}>Add new book</ModalHeader>
               <ModalBody>
                 <Form>
                   <FormGroup>
-                    <Label for="name">Name</Label>
+                    <Label for="author">Author</Label>
+                    <Field as={Input} type="select" name="author">
+                      {authors.map((author) => (
+                        <option value={author.id}>{author.name}</option>
+                      ))}
+                    </Field>
+                    <Label for="title">Name</Label>
                     <Field
                       as={Input}
                       type="text"
-                      name="name"
-                      placeholder="Maisa"
+                      name="title"
+                      placeholder="Kirjan nimi"
                     />
                   </FormGroup>
                   <FormGroup>
-                    <Label for="email">Email</Label>
+                    <Label for="publicationYear">PublicationYear</Label>
                     <Field
                       as={Input}
-                      type="email"
-                      name="email"
-                      placeholder="maisa@example.com"
+                      type="number"
+                      name="publicationYear"
+                      placeholder="2020"
                     />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="password">Password</Label>
-                    <Field as={Input} type="password" name="password" />
                   </FormGroup>
                 </Form>
               </ModalBody>
@@ -81,7 +88,8 @@ const AddUserModal = (props) => {
   );
 };
 
-AddUserModal.displayName = "AddUserModal";
-export default connect(null, (dispatch) =>
-  bindActionCreators(userActions, dispatch)
-)(AddUserModal);
+AddBookModal.displayName = "AddBookModal";
+export default connect(
+  (store) => ({ authors: store.bookStore.authors }),
+  (dispatch) => bindActionCreators(bookActions, dispatch)
+)(AddBookModal);
